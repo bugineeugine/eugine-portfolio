@@ -12,16 +12,16 @@ export default function Home() {
     <>
       <Navbar />
       <Hero />
-      <main className="mx-auto grid max-w-6xl gap-8 px-6 py-12 lg:grid-cols-[1fr_360px] lg:px-8">
-        <div className="flex flex-col gap-12">
+      <main className="mx-auto flex max-w-6xl flex-col gap-12 px-6 py-12 lg:px-8">
+        <div className="grid gap-8 lg:grid-cols-[1fr_360px]">
           <TechStack />
-          <Projects />
+          <aside className="flex flex-col gap-6">
+            <AboutCard />
+            <ConnectCard />
+            <CtaCard />
+          </aside>
         </div>
-        <aside className="flex flex-col gap-6">
-          <AboutCard />
-          <ConnectCard />
-          <CtaCard />
-        </aside>
+        <Projects />
       </main>
       <Footer />
     </>

@@ -141,7 +141,6 @@ export const cta: Cta = {
 
 // Section titles, button labels, and other UI copy.
 export const ui = {
-  navCta: "Get in Touch",
   heroCta: "View My Projects",
   tech: { title: "Tech Stack", subtitle: "Technologies I work with" },
   projects: { title: "Featured Projects", subtitle: "Some of the projects I've built" },
