@@ -14,7 +14,7 @@ export function Hero() {
             {profile.roleSecondary}
           </span>
           <h1 className="mt-6 text-4xl font-bold tracking-tight sm:text-5xl">
-            {profile.headline} <span className="text-accent">{profile.headlineAccent}</span>{" "}
+            {profile.headline} <span className="whitespace-nowrap text-accent">{profile.headlineAccent}</span>{" "}
             {profile.headlineTail}
           </h1>
           <p className="mt-6 max-w-xl text-lg leading-8 text-white/70">{profile.intro}</p>

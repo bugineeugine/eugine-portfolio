@@ -2,6 +2,9 @@ import { Navbar } from "@/components/Navbar";
 import { Hero } from "@/components/Hero";
 import { TechStack } from "@/components/TechStack";
 import { Projects } from "@/components/Projects";
+import { AboutCard } from "@/components/AboutCard";
+import { ConnectCard } from "@/components/ConnectCard";
+import { CtaCard } from "@/components/CtaCard";
 import { Footer } from "@/components/Footer";
 
 export default function Home() {
@@ -14,7 +17,11 @@ export default function Home() {
           <TechStack />
           <Projects />
         </div>
-        <aside className="flex flex-col gap-6" />
+        <aside className="flex flex-col gap-6">
+          <AboutCard />
+          <ConnectCard />
+          <CtaCard />
+        </aside>
       </main>
       <Footer />
     </>
