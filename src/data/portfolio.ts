@@ -107,28 +107,32 @@ export const techStack: Tech[] = [
   { name: "GitHub", icon: "github" },
 ];
 
+// Modules of a private AI agent platform (client work, so no public links).
+// Thumbnails are rendered from the Remotion project in video/ (see README).
 export const projects: Project[] = [
-  // PLACEHOLDER: replace these three with real projects. image = path under public/, e.g. "/projects/one.png".
   {
-    title: "Project One",
-    description: "Short description here.",
-    tech: ["Next.js", "TypeScript", "PostgreSQL", "Drizzle"],
-    href: "https://github.com/your-username/project-one",
-    image: null,
-  },
-  {
-    title: "Project Two",
-    description: "Short description here.",
-    tech: ["Hono", "Anthropic", "Qdrant"],
-    href: "https://github.com/your-username/project-two",
-    image: null,
-  },
-  {
-    title: "Project Three",
-    description: "Short description here.",
-    tech: ["n8n", "Node.js", "Redis"],
+    title: "AI Agents",
+    description:
+      "Build chat agents on Ollama or Anthropic models with custom prompts, MCP tools, skills, and RAG knowledge bases on pgvector. Optional Docker sandbox per agent for code execution, structured JSON output, and an embeddable chat widget.",
+    tech: ["Next.js", "Hono", "LangChain", "PostgreSQL + pgvector", "Docker", "Ollama", "Anthropic"],
     href: null,
-    image: null,
+    image: "/projects/ai-agents.png",
+  },
+  {
+    title: "Orchestrators",
+    description:
+      "Multi-agent orchestration: a lead model plans a request and delegates to specialist subagents. Live flow view of every run, step-by-step traces, per-run token and cost tracking, and optional sandboxed execution.",
+    tech: ["Next.js", "Hono", "LangChain", "Anthropic", "Redis", "PostgreSQL"],
+    href: null,
+    image: "/projects/orchestrators.png",
+  },
+  {
+    title: "Dev Teams",
+    description:
+      "Autonomous software teams: chat a project into a plan, then a planner splits it into tasks that Frontend, Backend, and QA agents build through the Claude Agent SDK in a continuous loop, with a kanban board, activity timeline, and live dev-server previews.",
+    tech: ["Next.js", "Hono", "Claude Agent SDK", "PostgreSQL", "Redis", "Docker"],
+    href: null,
+    image: "/projects/dev-teams.png",
   },
 ];
 
