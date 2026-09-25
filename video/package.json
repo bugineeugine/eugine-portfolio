@@ -5,7 +5,7 @@
   "description": "Remotion stills for the portfolio project thumbnails",
   "scripts": {
     "studio": "remotion studio",
-    "render": "remotion still AiAgents ../public/projects/ai-agents.png && remotion still Orchestrators ../public/projects/orchestrators.png && remotion still DevTeams ../public/projects/dev-teams.png",
+    "render": "remotion still AiAgents ../public/projects/ai-agents.png && remotion still Orchestrators ../public/projects/orchestrators.png && remotion still DevTeams ../public/projects/dev-teams.png && node -e \"require('fs').rmSync('../.next/cache/images',{recursive:true,force:true})\"",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {

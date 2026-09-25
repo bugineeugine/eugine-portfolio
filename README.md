@@ -15,9 +15,12 @@ The three thumbnails are rendered from `video/` (a standalone Remotion project, 
 ```bash
 cd video
 pnpm install --ignore-workspace
-pnpm render          # writes public/projects/*.png
+pnpm render          # writes public/projects/*.png and clears .next/cache/images
 pnpm studio          # preview and tweak in the browser
 ```
+
+If a re-rendered thumbnail still looks old in the browser, the `next/image` optimizer cached the previous file
+(`.next/cache/images`, 4-hour default TTL). `pnpm render` clears it; then hard-refresh the page (Ctrl+Shift+R).
 
 Brand icons are Simple Icons SVGs (CC0) in `public/icons/`. Add one with
 `curl -o public/icons/<slug>.svg https://cdn.simpleicons.org/<slug>` and reference the slug in `techStack`.
