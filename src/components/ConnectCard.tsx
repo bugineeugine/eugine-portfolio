@@ -1,11 +1,11 @@
 import Image from "next/image";
-import { profile } from "@/data/portfolio";
+import { profile, ui } from "@/data/portfolio";
 import { Glyph } from "@/components/Glyph";
 
 export function ConnectCard() {
   return (
     <section className="rounded-xl border border-line bg-white p-6">
-      <h2 className="border-l-[3px] border-accent pl-3 text-lg font-bold text-ink">Let&apos;s Connect</h2>
+      <h2 className="border-l-[3px] border-accent pl-3 text-lg font-bold text-ink">{ui.connectTitle}</h2>
       <ul className="mt-4 flex flex-col gap-3">
         {profile.links.map((link) => (
           <li key={link.label}>

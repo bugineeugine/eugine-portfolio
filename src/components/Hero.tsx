@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { profile } from "@/data/portfolio";
+import { profile, ui } from "@/data/portfolio";
 
 export function Hero() {
   return (
@@ -20,19 +20,20 @@ export function Hero() {
           <p className="mt-6 max-w-xl text-lg leading-8 text-white/70">{profile.intro}</p>
           <a
             href="#projects"
-            className="mt-8 inline-flex items-center gap-2 rounded-full bg-accent px-6 py-3 text-sm font-semibold text-white hover:bg-blue-500"
+            className="mt-8 inline-flex items-center gap-2 rounded-full bg-accent px-6 py-3 text-sm font-semibold text-white hover:bg-blue-700"
           >
-            View My Projects
+            {ui.heroCta}
             <span aria-hidden>&rarr;</span>
           </a>
         </div>
         <div className="justify-self-center">
           <Image
             src={profile.avatar}
-            alt={`Avatar of ${profile.name}`}
+            alt={profile.name}
             width={360}
             height={360}
-            priority
+            loading="eager"
+            fetchPriority="high"
             className="h-60 w-60 rounded-3xl object-cover ring-1 ring-white/10 lg:h-90 lg:w-90"
           />
         </div>

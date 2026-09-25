@@ -26,7 +26,7 @@ export function ProjectCard({ project }: { project: Project }) {
             </a>
           )}
         </div>
-        <ul className="mt-2 flex flex-wrap gap-x-3 gap-y-1 pl-3.5 font-mono text-[11px] text-muted">
+        <ul className="mt-2 flex flex-wrap gap-x-3 gap-y-1 pl-3.5 font-mono text-[11px] text-body">
           {project.tech.map((t) => (
             <li key={t}>{t}</li>
           ))}

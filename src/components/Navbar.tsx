@@ -1,4 +1,4 @@
-import { navLinks, profile } from "@/data/portfolio";
+import { navLinks, profile, ui } from "@/data/portfolio";
 
 export function Navbar() {
   return (
@@ -19,9 +19,9 @@ export function Navbar() {
         </ul>
         <a
           href={`mailto:${profile.email}`}
-          className="rounded-full bg-accent px-5 py-2 text-sm font-semibold text-white hover:bg-blue-500"
+          className="rounded-full bg-accent px-5 py-2 text-sm font-semibold text-white hover:bg-blue-700"
         >
-          Get in Touch
+          {ui.navCta}
         </a>
       </nav>
     </header>

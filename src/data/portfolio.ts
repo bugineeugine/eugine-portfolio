@@ -1,4 +1,6 @@
 // Every piece of text on the site lives here. Edit this file, not the components.
+import { existsSync } from "node:fs";
+import { join } from "node:path";
 
 export type Link = { label: string; href: string; icon: string | null };
 export type NavLink = { label: string; href: string };
@@ -137,6 +139,16 @@ export const cta: Cta = {
   button: "Send Message",
 };
 
+// Section titles, button labels, and other UI copy.
+export const ui = {
+  navCta: "Get in Touch",
+  heroCta: "View My Projects",
+  tech: { title: "Tech Stack", subtitle: "Technologies I work with" },
+  projects: { title: "Featured Projects", subtitle: "Some of the projects I've built" },
+  aboutTitle: "About Me",
+  connectTitle: "Let's Connect",
+};
+
 // Guard: external hrefs must be absolute or mailto so no anchor points back at this page.
 const externalLinks: { label: string; href: string }[] = [
   ...profile.links,
@@ -145,5 +157,16 @@ const externalLinks: { label: string; href: string }[] = [
 for (const link of externalLinks) {
   if (!/^(https?:\/\/|mailto:)/.test(link.href)) {
     throw new Error(`portfolio.ts: invalid href for "${link.label}": ${link.href}`);
+  }
+}
+
+// Guard: every icon slug must have a file in public/icons so a typo fails the build, not the page.
+// This module is only imported by server components, so the filesystem is available.
+const iconSlugs = [...techStack, ...profile.links]
+  .map((item) => item.icon)
+  .filter((slug): slug is string => slug !== null);
+for (const slug of iconSlugs) {
+  if (!existsSync(join(process.cwd(), "public", "icons", `${slug}.svg`))) {
+    throw new Error(`portfolio.ts: missing icon file public/icons/${slug}.svg`);
   }
 }

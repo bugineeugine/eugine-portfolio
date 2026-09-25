@@ -1,10 +1,10 @@
-import { profile } from "@/data/portfolio";
+import { profile, ui } from "@/data/portfolio";
 import { Glyph } from "@/components/Glyph";
 
 export function AboutCard() {
   return (
     <section id="about" className="scroll-mt-20 rounded-xl border border-line bg-white p-6">
-      <h2 className="border-l-[3px] border-accent pl-3 text-lg font-bold text-ink">About Me</h2>
+      <h2 className="border-l-[3px] border-accent pl-3 text-lg font-bold text-ink">{ui.aboutTitle}</h2>
       <p className="mt-4 text-sm leading-7 text-body">{profile.bio}</p>
       <dl className="mt-6 flex flex-col gap-4 border-t border-line pt-6">
         {profile.facts.map((fact) => (
