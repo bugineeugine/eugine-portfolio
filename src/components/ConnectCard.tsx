@@ -5,7 +5,9 @@ import { Glyph } from "@/components/Glyph";
 export function ConnectCard() {
   return (
     <section className="rounded-xl border border-line bg-white p-6">
-      <h2 className="border-l-[3px] border-accent pl-3 text-lg font-bold text-ink">{ui.connectTitle}</h2>
+      <h2 className="border-l-[3px] border-accent pl-3 font-display text-xl font-bold text-ink">
+        {ui.connectTitle}
+      </h2>
       <ul className="mt-4 flex flex-col gap-3">
         {profile.links.map((link) => (
           <li key={link.label}>
@@ -23,6 +25,8 @@ export function ConnectCard() {
                     unoptimized
                     className="h-4 w-4"
                   />
+                ) : link.monogram ? (
+                  <span className="font-display text-sm font-bold">{link.monogram}</span>
                 ) : (
                   <Glyph name={link.href.startsWith("mailto:") ? "mail" : "arrow"} />
                 )}

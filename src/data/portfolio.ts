@@ -2,7 +2,7 @@
 import { existsSync } from "node:fs";
 import { join } from "node:path";
 
-export type Link = { label: string; href: string; icon: string | null };
+export type Link = { label: string; href: string; icon: string | null; monogram?: string };
 export type NavLink = { label: string; href: string };
 export type Fact = {
   icon: "location" | "availability" | "experience";
@@ -61,7 +61,7 @@ export const profile: Profile = {
   links: [
     // PLACEHOLDER: replace GitHub and LinkedIn URLs with your real profiles.
     { label: "GitHub", href: "https://github.com/your-username", icon: "github" },
-    { label: "LinkedIn", href: "https://www.linkedin.com/in/your-username", icon: null },
+    { label: "LinkedIn", href: "https://www.linkedin.com/in/your-username", icon: null, monogram: "in" },
     { label: "Email", href: `mailto:${email}`, icon: null },
   ],
 };

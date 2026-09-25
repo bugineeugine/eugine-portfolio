@@ -4,7 +4,7 @@ export function Navbar() {
   return (
     <header className="sticky top-0 z-10 border-b border-line bg-white/90 backdrop-blur">
       <nav className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6 lg:px-8">
-        <a href="#home" className="flex items-center gap-2.5 font-semibold text-ink">
+        <a href="#home" className="flex items-center gap-2.5 font-display text-lg font-bold text-ink">
           <span className="h-6 w-6 rounded-md bg-accent" aria-hidden />
           {profile.name}
         </a>
