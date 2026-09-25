@@ -1,14 +1,29 @@
 type GlyphName = "location" | "availability" | "experience" | "mail" | "arrow";
 
-const paths: Record<GlyphName, string> = {
-  location: "M12 21s-6-5.33-6-10a6 6 0 1 1 12 0c0 4.67-6 10-6 10Zm0-8a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z",
-  availability: "M4 7h16v12H4V7Zm4-3h8v3H8V4Zm4 8v4",
-  experience: "M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18Zm0 4v5l3 2",
+// Solid shapes for the About facts; thin strokes for small inline marks.
+const filled: Partial<Record<GlyphName, string>> = {
+  location:
+    "M12 2a7 7 0 0 0-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 0 0-7-7zm0 9.5a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5z",
+  availability:
+    "M10 4h4a2 2 0 0 1 2 2v1h3a2 2 0 0 1 2 2v3H3V9a2 2 0 0 1 2-2h3V6a2 2 0 0 1 2-2zm0 3h4V6h-4v1zM3 13.5h18V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-5.5z",
+  experience:
+    "M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm1 5v4.6l3.2 1.9-.8 1.3L11 12.4V7h2z",
+};
+
+const stroked: Partial<Record<GlyphName, string>> = {
   mail: "M3 6h18v12H3V6Zm0 0 9 7 9-7",
   arrow: "M7 17 17 7M9 7h8v8",
 };
 
 export function Glyph({ name, className = "h-4 w-4" }: { name: GlyphName; className?: string }) {
+  const solid = filled[name];
+  if (solid) {
+    return (
+      <svg viewBox="0 0 24 24" fill="currentColor" className={className} aria-hidden>
+        <path d={solid} />
+      </svg>
+    );
+  }
   return (
     <svg
       viewBox="0 0 24 24"
@@ -20,7 +35,7 @@ export function Glyph({ name, className = "h-4 w-4" }: { name: GlyphName; classN
       className={className}
       aria-hidden
     >
-      <path d={paths[name]} />
+      <path d={stroked[name]} />
     </svg>
   );
 }

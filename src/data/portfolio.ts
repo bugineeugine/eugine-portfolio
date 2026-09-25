@@ -55,8 +55,7 @@ export const profile: Profile = {
   facts: [
     { icon: "location", label: "Location", value: "Philippines" },
     { icon: "availability", label: "Availability", value: "Open for opportunities" },
-    // PLACEHOLDER: adjust experience.
-    { icon: "experience", label: "Experience", value: "1+ years (self-taught / freelance)" },
+    { icon: "experience", label: "Experience", value: "4+ years" },
   ],
   links: [
     // PLACEHOLDER: replace GitHub and LinkedIn URLs with your real profiles.

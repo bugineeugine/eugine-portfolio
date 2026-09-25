@@ -12,7 +12,7 @@ export function AboutCard() {
         {profile.facts.map((fact) => (
           <div key={fact.label} className="flex items-center gap-3">
             <dt className="flex items-center gap-3 text-sm text-body">
-              <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-accent-soft text-accent">
+              <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-accent text-white">
                 <Glyph name={fact.icon} />
               </span>
               <span className="w-20">{fact.label}</span>
