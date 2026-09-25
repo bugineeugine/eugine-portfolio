@@ -2,7 +2,6 @@
 import { existsSync } from "node:fs";
 import { join } from "node:path";
 
-export type Link = { label: string; href: string; icon: string | null; monogram?: string };
 export type NavLink = { label: string; href: string };
 export type Fact = {
   icon: "location" | "availability" | "experience";
@@ -22,7 +21,6 @@ export type Profile = {
   avatar: string;
   email: string;
   facts: Fact[];
-  links: Link[];
 };
 
 export type Tech = { name: string; icon: string | null };
@@ -37,7 +35,7 @@ export type Project = {
 
 export type Cta = { title: string; text: string; button: string };
 
-const email = "eugine.rosillon@clicktekconsulting.com";
+const email = "bugineeugine06@gmail.com";
 
 export const profile: Profile = {
   name: "Eugine Rosillon",
@@ -56,12 +54,6 @@ export const profile: Profile = {
     { icon: "location", label: "Location", value: "Philippines" },
     { icon: "availability", label: "Availability", value: "Open for opportunities" },
     { icon: "experience", label: "Experience", value: "4+ years" },
-  ],
-  links: [
-    // PLACEHOLDER: replace GitHub and LinkedIn URLs with your real profiles.
-    { label: "GitHub", href: "https://github.com/your-username", icon: "github" },
-    { label: "LinkedIn", href: "https://www.linkedin.com/in/your-username", icon: null, monogram: "in" },
-    { label: "Email", href: `mailto:${email}`, icon: null },
   ],
 };
 
@@ -148,14 +140,12 @@ export const ui = {
   tech: { title: "Tech Stack", subtitle: "Technologies I work with" },
   projects: { title: "Featured Projects", subtitle: "Some of the projects I've built" },
   aboutTitle: "About Me",
-  connectTitle: "Let's Connect",
 };
 
 // Guard: external hrefs must be absolute or mailto so no anchor points back at this page.
-const externalLinks: { label: string; href: string }[] = [
-  ...profile.links,
-  ...projects.flatMap((p) => (p.href ? [{ label: p.title, href: p.href }] : [])),
-];
+const externalLinks: { label: string; href: string }[] = projects.flatMap((p) =>
+  p.href ? [{ label: p.title, href: p.href }] : [],
+);
 for (const link of externalLinks) {
   if (!/^(https?:\/\/|mailto:)/.test(link.href)) {
     throw new Error(`portfolio.ts: invalid href for "${link.label}": ${link.href}`);
@@ -164,7 +154,7 @@ for (const link of externalLinks) {
 
 // Guard: every icon slug must have a file in public/icons so a typo fails the build, not the page.
 // This module is only imported by server components, so the filesystem is available.
-const iconSlugs = [...techStack, ...profile.links]
+const iconSlugs = techStack
   .map((item) => item.icon)
   .filter((slug): slug is string => slug !== null);
 for (const slug of iconSlugs) {
