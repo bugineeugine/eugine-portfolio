@@ -129,8 +129,8 @@ export const projects: Project[] = [
   {
     title: "Dev Teams",
     description:
-      "Autonomous software teams: chat a project into a plan, then a planner splits it into tasks that Frontend, Backend, and QA agents build through the Claude Agent SDK in a continuous loop, with a kanban board, activity timeline, and live dev-server previews.",
-    tech: ["Next.js", "Hono", "Claude Agent SDK", "PostgreSQL", "Redis", "Docker"],
+      "Autonomous software teams: describe a project and the system analyzes it, picks the right agents for the stack on its own, plans the work, and builds it task by task with Claude Agent in a continuous loop, with a build log and live dev-server previews.",
+    tech: ["Next.js", "Hono", "Claude Agent", "PostgreSQL", "Redis", "Docker"],
     href: null,
     image: "/projects/dev-teams.png",
   },

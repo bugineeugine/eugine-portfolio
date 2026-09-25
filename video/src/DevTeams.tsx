@@ -1,125 +1,167 @@
-import { Avatar, Backdrop, Card, Dot, Label, Pill, Window } from "./ui";
-import { color, font } from "./theme";
+import type { ReactNode } from "react";
+import { Browser, Initial } from "./chrome";
+import { font } from "./theme";
 
-const roster: { name: string; role: string; tone: "accent" | "magenta" | "green" | "amber"; state: "working" | "idle" }[] = [
-  { name: "Planner", role: "splits PLAN.md into tasks", tone: "accent", state: "idle" },
-  { name: "Frontend", role: "Next.js · UI tasks", tone: "magenta", state: "working" },
-  { name: "Backend", role: "API · database", tone: "green", state: "working" },
-  { name: "QA", role: "tests · review", tone: "amber", state: "idle" },
-];
+// Dark zinc build console: analysis → auto-picked agents → build log + live preview.
+const c = {
+  bg: "#18181b",
+  panel: "#1f1f23",
+  panel2: "#26262b",
+  line: "#2e2e34",
+  ink: "#fafafa",
+  body: "#a1a1aa",
+  muted: "#71717a",
+  accent: "#22c55e",
+  blue: "#60a5fa",
+  amber: "#f59e0b",
+  violet: "#a78bfa",
+  pink: "#f472b6",
+};
 
-type Task = { title: string; who?: string; tone?: "accent" | "magenta" | "green" | "amber" };
-const columns: { name: string; count: number; tasks: Task[] }[] = [
-  {
-    name: "To do",
-    count: 3,
-    tasks: [{ title: "Low-stock email alerts" }, { title: "CSV import for products" }, { title: "Role-based access" }],
-  },
-  {
-    name: "In progress",
-    count: 2,
-    tasks: [
-      { title: "Inventory table with filters", who: "Frontend", tone: "magenta" },
-      { title: "POST /api/items + validation", who: "Backend", tone: "green" },
-    ],
-  },
-  {
-    name: "Done",
-    count: 4,
-    tasks: [
-      { title: "Project scaffold + auth", who: "Backend", tone: "green" },
-      { title: "Products schema + migration", who: "Backend", tone: "green" },
-      { title: "Dashboard layout", who: "Frontend", tone: "magenta" },
-      { title: "12 tests passing", who: "QA", tone: "amber" },
-    ],
-  },
+const Step = ({ label, state }: { label: string; state: "done" | "active" | "todo" }) => (
+  <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+    <span style={{ width: 20, height: 20, borderRadius: 10, display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: 11, fontWeight: 700, backgroundColor: state === "done" ? c.accent : state === "active" ? c.blue : c.panel2, color: state === "todo" ? c.muted : "#0b0f17", border: state === "todo" ? `1px solid ${c.line}` : "none" }}>
+      {state === "done" ? "✓" : state === "active" ? "▶" : ""}
+    </span>
+    <span style={{ fontSize: 13, color: state === "todo" ? c.muted : c.ink, fontWeight: state === "active" ? 600 : 500 }}>{label}</span>
+  </div>
+);
+
+const Box = ({ title, right, children, style }: { title: string; right?: ReactNode; children: ReactNode; style?: React.CSSProperties }) => (
+  <div style={{ backgroundColor: c.panel, border: `1px solid ${c.line}`, borderRadius: 10, display: "flex", flexDirection: "column", minHeight: 0, ...style }}>
+    <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "10px 14px", borderBottom: `1px solid ${c.line}`, fontSize: 12, fontWeight: 600, color: c.body, textTransform: "uppercase", letterSpacing: 0.5 }}>
+      <span>{title}</span>
+      {right}
+    </div>
+    <div style={{ padding: 14, display: "flex", flexDirection: "column", gap: 10, minHeight: 0, flex: 1 }}>{children}</div>
+  </div>
+);
+
+const picked = [
+  { name: "Next.js Frontend Engineer", why: "App Router + Tailwind detected in PLAN.md", color: c.pink, letter: "F" },
+  { name: "Hono API Engineer", why: "REST endpoints + Drizzle schema in scope", color: c.blue, letter: "B" },
+  { name: "Postgres Data Modeler", why: "5 tables, 2 relations, migrations needed", color: c.violet, letter: "D" },
+  { name: "QA & Test Writer", why: "Vitest + Playwright requested", color: c.amber, letter: "Q" },
 ];
 
 export const DevTeams = () => (
-  <Backdrop>
-    <Window title="Dev Teams" crumb="Inventory App · build #3" style={{ left: 80, top: 70, width: 1440, height: 760 }}>
-      {/* Roster */}
-      <div style={{ width: 290, borderRight: `1px solid ${color.line}`, padding: 18, display: "flex", flexDirection: "column", gap: 8 }}>
-        <Label>TEAM</Label>
-        {roster.map((m) => (
-          <div key={m.name} style={{ display: "flex", alignItems: "center", gap: 12, padding: "10px 12px", borderRadius: 12, backgroundColor: m.state === "working" ? "rgba(255,255,255,0.03)" : "transparent" }}>
-            <Avatar letter={m.name[0]} tone={m.tone} size={34} />
-            <div style={{ flex: 1 }}>
-              <div style={{ fontSize: 15, fontWeight: 600, color: color.ink }}>{m.name}</div>
-              <div style={{ fontSize: 12, color: color.muted }}>{m.role}</div>
-            </div>
-            <Dot tone={m.state === "working" ? "green" : "muted"} size={8} />
+  <Browser url="localhost:3000/dev-teams/projects/inventory-app" tab="Inventory App · Dev Teams" dark>
+    <div style={{ display: "flex", flex: 1, flexDirection: "column", backgroundColor: c.bg, color: c.ink }}>
+      {/* Project header */}
+      <div style={{ padding: "14px 22px", borderBottom: `1px solid ${c.line}`, backgroundColor: c.panel, display: "flex", alignItems: "center", gap: 16 }}>
+        <Initial letter="I" bg={c.accent} fg="#0b0f17" size={36} radius={8} />
+        <div>
+          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+            <span style={{ fontFamily: font.display, fontWeight: 700, fontSize: 18 }}>Inventory App</span>
+            <span style={{ fontSize: 11, fontWeight: 600, color: c.accent, border: `1px solid ${c.accent}66`, backgroundColor: `${c.accent}1a`, padding: "3px 8px", borderRadius: 999 }}>● AUTONOMOUS · building</span>
           </div>
-        ))}
-        <div style={{ marginTop: 16 }}>
-          <Label>BUILD LOOP</Label>
-          <Card style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-            <div style={{ display: "flex", justifyContent: "space-between", fontSize: 13, color: color.body }}>
-              <span>Task 6 of 9</span>
-              <span style={{ color: color.green }}>running</span>
-            </div>
-            <div style={{ height: 8, borderRadius: 4, backgroundColor: color.line }}>
-              <div style={{ width: "62%", height: 8, borderRadius: 4, backgroundColor: color.accent }} />
-            </div>
-            <div style={{ fontSize: 12, color: color.muted }}>Claude Code · session resumed · 41 min</div>
-          </Card>
+          <div style={{ fontSize: 12, color: c.muted, marginTop: 2 }}>Build #3 · started 41 min ago · Claude Agent</div>
         </div>
-        <div style={{ marginTop: "auto", display: "flex", gap: 6 }}>
-          <Pill tone="green" size={12}><Dot tone="green" size={6} /> preview :3001</Pill>
-          <Pill size={12}>Pause</Pill>
+        <div style={{ marginLeft: "auto", display: "flex", gap: 28 }}>
+          <Step label="Analyze project" state="done" />
+          <Step label="Pick agents" state="done" />
+          <Step label="Plan tasks" state="done" />
+          <Step label="Build" state="active" />
+          <Step label="Test & review" state="todo" />
+          <Step label="Ship" state="todo" />
+        </div>
+        <div style={{ display: "flex", gap: 8 }}>
+          <span style={{ fontSize: 13, padding: "7px 12px", borderRadius: 8, border: `1px solid ${c.line}`, color: c.body }}>Pause</span>
+          <span style={{ fontSize: 13, padding: "7px 12px", borderRadius: 8, backgroundColor: c.ink, color: "#0b0f17", fontWeight: 600 }}>Open preview</span>
         </div>
       </div>
 
-      {/* Kanban */}
-      <div style={{ flex: 1, padding: 22, display: "flex", gap: 16 }}>
-        {columns.map((c) => (
-          <div key={c.name} style={{ flex: 1, display: "flex", flexDirection: "column", gap: 10 }}>
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "0 4px" }}>
-              <span style={{ fontFamily: font.display, fontWeight: 600, fontSize: 16, color: color.ink }}>{c.name}</span>
-              <span style={{ fontSize: 12, color: color.muted }}>{c.count}</span>
+      {/* Body */}
+      <div style={{ display: "grid", gridTemplateColumns: "400px 1fr 470px", gap: 14, padding: 14, flex: 1, minHeight: 0 }}>
+        {/* Left: analysis + picked agents */}
+        <div style={{ display: "flex", flexDirection: "column", gap: 14, minHeight: 0 }}>
+          <Box title="Project analysis" right={<span style={{ color: c.accent, textTransform: "none" }}>done · 12s</span>}>
+            <div style={{ fontSize: 13, color: c.body, lineHeight: 1.55 }}>
+              Read the brief and PLAN.md, detected a <span style={{ color: c.ink }}>Next.js 16 + Hono + Postgres</span> stack with auth, product CRUD, CSV import and low-stock alerts. Split into <span style={{ color: c.ink }}>9 tasks</span> across 3 milestones.
             </div>
-            {c.tasks.map((t) => (
-              <Card key={t.title} style={{ padding: 14, display: "flex", flexDirection: "column", gap: 10 }}>
-                <span style={{ fontSize: 14, color: color.ink, lineHeight: 1.4 }}>{t.title}</span>
-                {t.who ? (
-                  <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                    <Avatar letter={t.who[0]} tone={t.tone} size={20} />
-                    <span style={{ fontSize: 12, color: color.muted }}>{t.who}</span>
-                  </div>
-                ) : (
-                  <span style={{ fontSize: 12, color: color.muted }}>unassigned</span>
-                )}
-              </Card>
+            <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
+              {["Next.js 16", "Hono", "Drizzle", "Postgres", "Tailwind", "Vitest"].map((t) => (
+                <span key={t} style={{ fontSize: 11, color: c.body, backgroundColor: c.panel2, padding: "3px 8px", borderRadius: 6 }}>{t}</span>
+              ))}
+            </div>
+          </Box>
+          <Box title="Agents selected automatically" right={<span style={{ textTransform: "none", color: c.muted }}>4 of 23 in library</span>} style={{ flex: 1 }}>
+            {picked.map((a) => (
+              <div key={a.name} style={{ display: "flex", gap: 10, alignItems: "flex-start" }}>
+                <Initial letter={a.letter} bg={a.color} fg="#0b0f17" size={30} />
+                <div style={{ flex: 1 }}>
+                  <div style={{ fontSize: 13, fontWeight: 600 }}>{a.name}</div>
+                  <div style={{ fontSize: 12, color: c.muted }}>{a.why}</div>
+                </div>
+              </div>
+            ))}
+            <div style={{ fontSize: 12, color: c.muted, borderTop: `1px solid ${c.line}`, paddingTop: 10 }}>Roster is re-evaluated after every milestone.</div>
+          </Box>
+        </div>
+
+        {/* Middle: build log */}
+        <Box title="Build log" right={<span style={{ color: c.blue, textTransform: "none" }}>task 6 / 9 · running</span>}>
+          <div style={{ fontFamily: "ui-monospace, Menlo, Consolas, monospace", fontSize: 12, lineHeight: 1.75, color: c.body, display: "flex", flexDirection: "column" }}>
+            {[
+              ["10:02", c.accent, "planner", "wrote PLAN.md · 9 tasks · 3 milestones"],
+              ["10:04", c.violet, "data", "created products, categories, stock_levels tables"],
+              ["10:05", c.violet, "data", "drizzle-kit generate → 0003_stock_levels.sql ✓"],
+              ["10:19", c.blue, "api", "POST /api/items · zod validation · 201/400"],
+              ["10:21", c.amber, "qa", "vitest · 12 passed, 0 failed (3.1s)"],
+              ["10:31", c.pink, "web", "dashboard layout + sidebar nav ✓"],
+              ["10:44", c.blue, "api", "GET /api/items?low=true · index on stock_levels(qty)"],
+              ["10:45", c.pink, "web", "inventory table: filters, sort, pagination"],
+              ["10:46", c.muted, "system", "dev server ready → http://localhost:3001"],
+              ["10:47", c.pink, "web", "▍ wiring low-stock badge to /api/items?low=true"],
+            ].map(([t, col, who, msg], i) => (
+              <div key={i} style={{ display: "grid", gridTemplateColumns: "44px 56px 1fr", gap: 10 }}>
+                <span style={{ color: c.muted }}>{t}</span>
+                <span style={{ color: col as string }}>{who}</span>
+                <span style={{ color: i === 9 ? c.ink : c.body }}>{msg}</span>
+              </div>
             ))}
           </div>
-        ))}
-      </div>
-
-      {/* Activity */}
-      <div style={{ width: 340, borderLeft: `1px solid ${color.line}`, padding: 18, display: "flex", flexDirection: "column", gap: 4 }}>
-        <Label>ACTIVITY</Label>
-        {[
-          ["Planner", "Wrote PLAN.md and split it into 9 tasks", "accent", "10:02"],
-          ["Backend", "Added products table + migration", "green", "10:19"],
-          ["Frontend", "Dashboard layout shipped", "magenta", "10:31"],
-          ["QA", "12 tests passing, 0 failing", "amber", "10:40"],
-          ["Backend", "Working on POST /api/items", "green", "10:44"],
-          ["Frontend", "Working on inventory table filters", "magenta", "10:45"],
-          ["System", "Dev server ready on port 3001", "muted", "10:46"],
-        ].map(([who, what, tone, t], i) => (
-          <div key={i} style={{ display: "flex", gap: 10, alignItems: "flex-start", padding: "9px 0", borderBottom: `1px solid ${color.line}` }}>
-            <Dot tone={tone as "accent" | "green" | "magenta" | "amber" | "muted"} size={8} />
-            <div style={{ flex: 1, marginTop: -4 }}>
-              <div style={{ fontSize: 13, fontWeight: 600, color: color.ink }}>{who}</div>
-              <div style={{ fontSize: 13, color: color.body }}>{what}</div>
-            </div>
-            <span style={{ fontSize: 12, color: color.muted, marginTop: -2 }}>{t}</span>
+          <div style={{ marginTop: "auto", display: "flex", gap: 8 }}>
+            {["Task 6: inventory table with filters", "web", "in progress"].map((t, i) => (
+              <span key={t} style={{ fontSize: 12, color: i === 0 ? c.ink : c.body, backgroundColor: c.panel2, padding: "5px 10px", borderRadius: 6 }}>{t}</span>
+            ))}
           </div>
-        ))}
+        </Box>
+
+        {/* Right: live preview */}
+        <Box title="Live preview" right={<span style={{ color: c.accent, textTransform: "none" }}>● localhost:3001</span>}>
+          <div style={{ flex: 1, backgroundColor: "#ffffff", borderRadius: 8, overflow: "hidden", display: "flex", color: "#0f172a", fontSize: 11 }}>
+            <div style={{ width: 120, backgroundColor: "#f8fafc", borderRight: "1px solid #e2e8f0", padding: 10, display: "flex", flexDirection: "column", gap: 6 }}>
+              <div style={{ fontWeight: 700, fontSize: 12, marginBottom: 6 }}>Inventory</div>
+              {["Dashboard", "Products", "Stock", "Suppliers", "Reports"].map((n, i) => (
+                <div key={n} style={{ padding: "5px 8px", borderRadius: 6, backgroundColor: i === 1 ? "#e0e7ff" : "transparent", color: i === 1 ? "#3730a3" : "#475569" }}>{n}</div>
+              ))}
+            </div>
+            <div style={{ flex: 1, padding: 12, display: "flex", flexDirection: "column", gap: 8 }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                <span style={{ fontWeight: 700, fontSize: 13 }}>Products</span>
+                <span style={{ backgroundColor: "#0f172a", color: "#fff", padding: "4px 8px", borderRadius: 6 }}>+ Add product</span>
+              </div>
+              <div style={{ display: "flex", gap: 6 }}>
+                {["All", "Low stock (4)", "Out of stock"].map((f, i) => (
+                  <span key={f} style={{ padding: "3px 8px", borderRadius: 999, border: "1px solid #e2e8f0", backgroundColor: i === 1 ? "#fef3c7" : "#fff", color: i === 1 ? "#92400e" : "#475569" }}>{f}</span>
+                ))}
+              </div>
+              <div style={{ border: "1px solid #e2e8f0", borderRadius: 6, overflow: "hidden" }}>
+                <div style={{ display: "grid", gridTemplateColumns: "1.6fr 1fr 0.7fr 0.8fr", backgroundColor: "#f8fafc", padding: "6px 8px", color: "#64748b", fontWeight: 600 }}>
+                  <span>Name</span><span>SKU</span><span>Qty</span><span>Status</span>
+                </div>
+                {[["Wireless Headphones", "WH-2201", "3", "Low"], ["USB-C Hub 7-in-1", "HB-0710", "48", "OK"], ["Mechanical Keyboard", "KB-8801", "0", "Out"], ["27\" Monitor", "MN-2700", "12", "OK"], ["Laptop Stand", "LS-1100", "2", "Low"]].map(([n, s, q, st]) => (
+                  <div key={s} style={{ display: "grid", gridTemplateColumns: "1.6fr 1fr 0.7fr 0.8fr", padding: "6px 8px", borderTop: "1px solid #f1f5f9", alignItems: "center" }}>
+                    <span>{n}</span><span style={{ color: "#64748b" }}>{s}</span><span>{q}</span>
+                    <span style={{ color: st === "OK" ? "#15803d" : st === "Low" ? "#b45309" : "#b91c1c", fontWeight: 600 }}>{st}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </Box>
       </div>
-    </Window>
-    <div style={{ position: "absolute", left: 80, top: 24, fontFamily: font.display, fontWeight: 700, fontSize: 22, color: color.accentSoft, letterSpacing: 0.3 }}>
-      Dev Teams
     </div>
-  </Backdrop>
+  </Browser>
 );

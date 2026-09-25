@@ -1,117 +1,141 @@
-import { Avatar, Backdrop, Card, Dot, Label, Pill, Window } from "./ui";
-import { color, font } from "./theme";
+import type { ReactNode } from "react";
+import { Browser, Initial } from "./chrome";
+import { font } from "./theme";
 
-type Sub = { name: string; status: "running" | "done" | "queued"; steps: string; tone: "accent" | "magenta" | "green" | "amber" };
+// Dark canvas workspace with a dotted grid, like a node editor.
+const c = {
+  bg: "#0f1117",
+  panel: "#161a23",
+  line: "#262b36",
+  ink: "#f1f3f7",
+  body: "#aab2c2",
+  muted: "#6b7385",
+  accent: "#60a5fa",
+  green: "#4ade80",
+  amber: "#fbbf24",
+  magenta: "#e879f9",
+};
 
-const subs: Sub[] = [
-  { name: "Web Researcher", status: "done", steps: "14 steps · 6 sources", tone: "magenta" },
-  { name: "Data Analyst", status: "running", steps: "step 7 · run_code", tone: "green" },
-  { name: "Report Writer", status: "queued", steps: "waiting for analyst", tone: "amber" },
+const Chip = ({ children, color }: { children: ReactNode; color: string }) => (
+  <span style={{ display: "inline-flex", alignItems: "center", gap: 6, fontSize: 12, fontWeight: 500, color, border: `1px solid ${color}55`, backgroundColor: `${color}1a`, padding: "3px 9px", borderRadius: 999, whiteSpace: "nowrap" }}>
+    <span style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: color }} />
+    {children}
+  </span>
+);
+
+type Node = { x: number; y: number; name: string; sub: string; color: string; status: string; letter: string };
+const lead: Node = { x: 70, y: 300, name: "Research Lead", sub: "Claude Opus · orchestrator", color: c.accent, status: "delegating", letter: "L" };
+const subs: Node[] = [
+  { x: 470, y: 120, name: "Web Researcher", sub: "web_search · fetch", color: c.magenta, status: "done · 14 steps", letter: "W" },
+  { x: 470, y: 300, name: "Data Analyst", sub: "run_code · sandbox", color: c.green, status: "running · step 7", letter: "D" },
+  { x: 470, y: 480, name: "Report Writer", sub: "writes final report", color: c.amber, status: "queued", letter: "R" },
 ];
 
-const statusPill = (s: Sub["status"]) =>
-  s === "running" ? (
-    <Pill tone="accent" size={12}><Dot tone="accent" size={6} /> running</Pill>
-  ) : s === "done" ? (
-    <Pill tone="green" size={12}><Dot tone="green" size={6} /> done</Pill>
-  ) : (
-    <Pill size={12}><Dot tone="muted" size={6} /> queued</Pill>
-  );
+const NodeCard = ({ n, glow }: { n: Node; glow?: boolean }) => (
+  <div style={{ position: "absolute", left: n.x, top: n.y, width: 300, backgroundColor: c.panel, border: `1px solid ${glow ? n.color : c.line}`, borderRadius: 12, boxShadow: glow ? `0 0 0 3px ${n.color}22, 0 20px 40px rgba(0,0,0,0.4)` : "0 20px 40px rgba(0,0,0,0.35)" }}>
+    <div style={{ display: "flex", alignItems: "center", gap: 10, padding: "12px 14px", borderBottom: `1px solid ${c.line}` }}>
+      <Initial letter={n.letter} bg={n.color} fg="#0b0f17" size={30} />
+      <div style={{ flex: 1 }}>
+        <div style={{ fontSize: 14, fontWeight: 600, color: c.ink }}>{n.name}</div>
+        <div style={{ fontSize: 11, color: c.muted }}>{n.sub}</div>
+      </div>
+      <span style={{ color: c.muted, fontSize: 14 }}>⋯</span>
+    </div>
+    <div style={{ padding: "10px 14px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+      <Chip color={n.color}>{n.status}</Chip>
+      <span style={{ fontSize: 11, color: c.muted }}>out ●</span>
+    </div>
+  </div>
+);
 
 export const Orchestrators = () => (
-  <Backdrop>
-    <Window title="Orchestrators" crumb="Market Research Lead" style={{ left: 80, top: 70, width: 1440, height: 760 }}>
-      {/* Flow canvas */}
-      <div style={{ flex: 1, position: "relative", padding: 26 }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 10 }}>
-          <Pill tone="accent" size={13}>Project · CRM pricing comparison</Pill>
-          <Pill size={13}>sandbox on</Pill>
-          <Pill size={13}>run #12</Pill>
-        </div>
-        <div style={{ backgroundColor: color.surface2, border: `1px solid ${color.line}`, borderRadius: 14, padding: "12px 16px", fontSize: 15, color: color.body, marginBottom: 20 }}>
-          <span style={{ color: color.muted }}>You:</span> Compare pricing and limits of the top 5 CRM tools for a 20-person team, then write a one-page recommendation.
-        </div>
-
-        <svg style={{ position: "absolute", left: 0, top: 0, width: "100%", height: "100%", pointerEvents: "none" }} viewBox="0 0 1080 660">
-          <defs>
-            <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
-              <path d="M0,0 L10,5 L0,10 z" fill={color.accentSoft} />
-            </marker>
-          </defs>
-          {[[300, 240], [300, 390], [300, 540]].map(([, y], i) => (
-            <path
-              key={i}
-              d={`M 300 390 C 400 390, 420 ${y}, 560 ${y}`}
-              stroke={i === 1 ? color.accentSoft : "rgba(96,165,250,0.55)"}
-              strokeWidth={i === 1 ? 3 : 2}
-              fill="none"
-              markerEnd="url(#arrow)"
-              strokeDasharray={i === 2 ? "8 8" : undefined}
-            />
+  <Browser url="localhost:3000/orchestrators/research-lead/runs/12" tab="Run #12 · Research Lead" dark>
+    <div style={{ display: "flex", flex: 1, flexDirection: "column", backgroundColor: c.bg, color: c.ink }}>
+      {/* Toolbar */}
+      <div style={{ height: 52, display: "flex", alignItems: "center", gap: 14, padding: "0 20px", borderBottom: `1px solid ${c.line}`, backgroundColor: c.panel }}>
+        <span style={{ fontFamily: font.display, fontWeight: 700, fontSize: 16 }}>Research Lead</span>
+        <span style={{ color: c.muted }}>/</span>
+        <span style={{ fontSize: 14, color: c.body }}>CRM pricing comparison</span>
+        <Chip color={c.accent}>run #12 · live</Chip>
+        <div style={{ marginLeft: "auto", display: "flex", gap: 8, fontSize: 13, color: c.body }}>
+          {["Flow", "Chat", "Trace", "Cost"].map((t, i) => (
+            <span key={t} style={{ padding: "6px 12px", borderRadius: 8, backgroundColor: i === 0 ? "#252a36" : "transparent", color: i === 0 ? c.ink : c.body }}>{t}</span>
           ))}
-        </svg>
+          <span style={{ padding: "6px 12px", borderRadius: 8, backgroundColor: "#ef4444", color: "#fff", fontWeight: 600 }}>Stop run</span>
+        </div>
+      </div>
 
-        {/* Lead node */}
-        <div style={{ position: "absolute", left: 40, top: 330, width: 262 }}>
-          <Card style={{ borderColor: "rgba(96,165,250,0.5)", boxShadow: "0 0 0 4px rgba(59,130,246,0.12)" }}>
-            <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-              <Avatar letter="L" size={40} />
-              <div>
-                <div style={{ fontFamily: font.display, fontWeight: 700, fontSize: 17, color: color.ink }}>Lead</div>
-                <div style={{ fontSize: 12, color: color.muted }}>claude-opus · delegates</div>
-              </div>
-            </div>
-            <div style={{ marginTop: 12, display: "flex", gap: 6, flexWrap: "wrap" }}>
-              <Pill tone="accent" size={12}>planning</Pill>
-              <Pill size={12}>3 subagents</Pill>
-            </div>
-          </Card>
+      <div style={{ display: "flex", flex: 1, minHeight: 0 }}>
+        {/* Canvas */}
+        <div style={{ flex: 1, position: "relative", backgroundColor: c.bg, backgroundImage: "radial-gradient(#2a3040 1px, transparent 1px)", backgroundSize: "22px 22px", overflow: "hidden" }}>
+          <div style={{ position: "absolute", left: 20, top: 16, display: "flex", gap: 8 }}>
+            <span style={{ fontSize: 12, color: c.muted, backgroundColor: c.panel, border: `1px solid ${c.line}`, padding: "6px 10px", borderRadius: 8 }}>Prompt: Compare pricing of the top 5 CRM tools for a 20-person team and recommend one.</span>
+          </div>
+          <svg style={{ position: "absolute", inset: 0, width: "100%", height: "100%" }}>
+            <defs>
+              <marker id="m" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+                <path d="M0,0 L8,4 L0,8 z" fill={c.accent} />
+              </marker>
+            </defs>
+            {subs.map((s, i) => (
+              <path
+                key={s.name}
+                d={`M 370 345 C 420 345, 420 ${s.y + 45}, 468 ${s.y + 45}`}
+                stroke={i === 1 ? c.accent : `${c.accent}88`}
+                strokeWidth={i === 1 ? 2.5 : 1.5}
+                strokeDasharray={i === 2 ? "6 6" : undefined}
+                fill="none"
+                markerEnd="url(#m)"
+              />
+            ))}
+            <path d="M 770 165 C 830 165, 830 345, 890 345" stroke={`${c.magenta}88`} strokeWidth={1.5} fill="none" markerEnd="url(#m)" />
+            <path d="M 770 345 C 830 345, 830 345, 890 345" stroke={c.green} strokeWidth={2} fill="none" markerEnd="url(#m)" />
+          </svg>
+          <NodeCard n={lead} glow />
+          {subs.map((s, i) => (
+            <NodeCard key={s.name} n={s} glow={i === 1} />
+          ))}
+          <div style={{ position: "absolute", left: 892, top: 300, width: 220, backgroundColor: c.panel, border: `1px dashed ${c.line}`, borderRadius: 12, padding: 14, color: c.muted, fontSize: 12 }}>
+            <div style={{ color: c.body, fontWeight: 600, marginBottom: 4 }}>Final answer</div>
+            waiting for Report Writer…
+          </div>
+          <div style={{ position: "absolute", right: 16, bottom: 14, display: "flex", gap: 6 }}>
+            {["−", "100%", "+", "⤢"].map((k) => (
+              <span key={k} style={{ fontSize: 12, color: c.body, backgroundColor: c.panel, border: `1px solid ${c.line}`, padding: "5px 9px", borderRadius: 6 }}>{k}</span>
+            ))}
+          </div>
         </div>
 
-        {/* Subagent nodes */}
-        {subs.map((s, i) => (
-          <div key={s.name} style={{ position: "absolute", left: 590, top: 180 + i * 150, width: 400 }}>
-            <Card style={{ display: "flex", flexDirection: "column", gap: 10, borderColor: s.status === "running" ? "rgba(96,165,250,0.5)" : color.line }}>
-              <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-                <Avatar letter={s.name[0]} tone={s.tone} size={36} />
-                <div style={{ flex: 1 }}>
-                  <div style={{ fontWeight: 600, fontSize: 16, color: color.ink }}>{s.name}</div>
-                  <div style={{ fontSize: 12, color: color.muted }}>{s.steps}</div>
+        {/* Trace drawer */}
+        <div style={{ width: 400, borderLeft: `1px solid ${c.line}`, backgroundColor: c.panel, display: "flex", flexDirection: "column" }}>
+          <div style={{ padding: "14px 18px", borderBottom: `1px solid ${c.line}`, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+            <span style={{ fontSize: 13, fontWeight: 600 }}>Trace</span>
+            <span style={{ fontSize: 12, color: c.green }}>$0.042 · 18.4k tokens · 11.9s</span>
+          </div>
+          <div style={{ padding: "6px 18px", display: "flex", flexDirection: "column" }}>
+            {[
+              ["10:42:03", "Lead", "Split request into research → analysis → writing", c.accent],
+              ["10:42:04", "Lead", "Delegated to Web Researcher, Data Analyst", c.accent],
+              ["10:42:05", "Web Researcher", 'web_search("CRM pricing 2026 per seat")', c.magenta],
+              ["10:42:08", "Web Researcher", "fetch × 6 pricing pages · 41k chars", c.magenta],
+              ["10:42:11", "Web Researcher", "Returned 5 plans with limits", c.magenta],
+              ["10:42:12", "Data Analyst", "run_code · normalize plans to per-seat/month", c.green],
+              ["10:42:14", "Data Analyst", "run_code · total cost for 20 seats, 12 months", c.green],
+              ["10:42:15", "Data Analyst", "▍ ranking by total cost…", c.green],
+              ["—", "Report Writer", "queued (needs analyst output)", c.amber],
+            ].map(([t, who, what, col], i) => (
+              <div key={i} style={{ display: "grid", gridTemplateColumns: "62px 8px 1fr", gap: 10, alignItems: "start", padding: "9px 0", borderBottom: `1px solid ${c.line}`, fontSize: 12 }}>
+                <span style={{ color: c.muted, fontVariantNumeric: "tabular-nums" }}>{t}</span>
+                <span style={{ width: 8, height: 8, borderRadius: 4, backgroundColor: col as string, marginTop: 4 }} />
+                <div>
+                  <span style={{ fontWeight: 600, color: c.ink }}>{who}</span>
+                  <div style={{ color: c.body, fontFamily: "ui-monospace, Menlo, monospace", fontSize: 11.5, marginTop: 2 }}>{what}</div>
                 </div>
-                {statusPill(s.status)}
               </div>
-            </Card>
+            ))}
           </div>
-        ))}
-      </div>
-
-      {/* Trace */}
-      <div style={{ width: 380, borderLeft: `1px solid ${color.line}`, padding: 18, display: "flex", flexDirection: "column", gap: 10 }}>
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-          <Label>TRACE</Label>
-          <Pill tone="green" size={12}>$0.042 · 18.4k tokens</Pill>
         </div>
-        {[
-          ["Lead", "Split request into research, analysis, writing", "0.8s", "accent"],
-          ["Web Researcher", "web_search · \"CRM pricing 2026\"", "3.1s", "magenta"],
-          ["Web Researcher", "fetch · 6 pricing pages", "5.6s", "magenta"],
-          ["Data Analyst", "run_code · normalize plans to per-seat", "2.4s", "green"],
-          ["Data Analyst", "run_code · rank by 20-seat total", "…", "green"],
-          ["Report Writer", "queued", "", "amber"],
-        ].map(([who, what, t, tone], i) => (
-          <div key={i} style={{ display: "flex", gap: 10, alignItems: "flex-start", padding: "8px 0", borderBottom: `1px solid ${color.line}` }}>
-            <Dot tone={tone as "accent" | "magenta" | "green" | "amber"} size={8} />
-            <div style={{ flex: 1, marginTop: -4 }}>
-              <div style={{ fontSize: 13, fontWeight: 600, color: color.ink }}>{who}</div>
-              <div style={{ fontSize: 13, color: color.body }}>{what}</div>
-            </div>
-            <span style={{ fontSize: 12, color: color.muted, marginTop: -2 }}>{t}</span>
-          </div>
-        ))}
       </div>
-    </Window>
-    <div style={{ position: "absolute", left: 80, top: 24, fontFamily: font.display, fontWeight: 700, fontSize: 22, color: color.accentSoft, letterSpacing: 0.3 }}>
-      Orchestrators
     </div>
-  </Backdrop>
+  </Browser>
 );
