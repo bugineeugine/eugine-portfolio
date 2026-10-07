@@ -24,6 +24,7 @@ export type Profile = {
 };
 
 export type Tech = { name: string; icon: string | null };
+export type TechCategory = { title: string; items: Tech[] };
 
 export type Project = {
   title: string;
@@ -33,9 +34,9 @@ export type Project = {
   image: string | null;
 };
 
-export type Cta = { title: string; text: string; button: string };
+export type Cta = { title: string; text: string };
 
-const email = "bugineeugine06@gmail.com";
+const email = "eugine.rosillon6@gmail.com";
 
 export const profile: Profile = {
   name: "Eugine Rosillon",
@@ -65,38 +66,63 @@ export const navLinks: NavLink[] = [
 ];
 
 // icon = file name under public/icons without .svg; null = monogram tile.
-export const techStack: Tech[] = [
-  { name: "Next.js", icon: "nextdotjs" },
-  { name: "React", icon: "react" },
-  { name: "TypeScript", icon: "typescript" },
-  { name: "JavaScript", icon: "javascript" },
-  { name: "HTML", icon: "html5" },
-  { name: "CSS", icon: "css" },
-  { name: "Tailwind CSS", icon: "tailwindcss" },
-  { name: "Material UI", icon: "mui" },
-  { name: "shadcn/ui", icon: "shadcnui" },
-  { name: "Node.js", icon: "nodedotjs" },
-  { name: "Hono", icon: "hono" },
-  { name: "Express", icon: "express" },
-  { name: "Python", icon: "python" },
-  { name: "MongoDB", icon: "mongodb" },
-  { name: "MySQL", icon: "mysql" },
-  { name: "PostgreSQL", icon: "postgresql" },
-  { name: "Redis", icon: "redis" },
-  { name: "Qdrant", icon: "qdrant" },
-  { name: "Drizzle", icon: "drizzle" },
-  { name: "LangChain", icon: "langchain" },
-  { name: "Anthropic", icon: "anthropic" },
-  { name: "OpenAI", icon: "openai" },
-  { name: "Ollama", icon: "ollama" },
-  { name: "n8n", icon: "n8n" },
-  { name: "Zapier", icon: "zapier" },
-  { name: "Claude Code", icon: "claude" },
-  { name: "Codex", icon: "codex" },
-  { name: "Docker", icon: "docker" },
-  { name: "Vercel", icon: "vercel" },
-  { name: "Git", icon: "git" },
-  { name: "GitHub", icon: "github" },
+export const techCategories: TechCategory[] = [
+  {
+    title: "Frontend",
+    items: [
+      { name: "Next.js", icon: "nextdotjs" },
+      { name: "React", icon: "react" },
+      { name: "TypeScript", icon: "typescript" },
+      { name: "JavaScript", icon: "javascript" },
+      { name: "HTML", icon: "html5" },
+      { name: "CSS", icon: "css" },
+      { name: "Tailwind CSS", icon: "tailwindcss" },
+      { name: "Bootstrap", icon: "bootstrap" },
+      { name: "Material UI", icon: "mui" },
+      { name: "shadcn/ui", icon: "shadcnui" },
+    ],
+  },
+  {
+    title: "Backend",
+    items: [
+      { name: "Node.js", icon: "nodedotjs" },
+      { name: "Hono", icon: "hono" },
+      { name: "Express", icon: "express" },
+      { name: "Python", icon: "python" },
+    ],
+  },
+  {
+    title: "Databases",
+    items: [
+      { name: "PostgreSQL", icon: "postgresql" },
+      { name: "MySQL", icon: "mysql" },
+      { name: "MongoDB", icon: "mongodb" },
+      { name: "Redis", icon: "redis" },
+      { name: "Qdrant", icon: "qdrant" },
+    ],
+  },
+  {
+    title: "AI & Automation",
+    items: [
+      { name: "LangChain", icon: "langchain" },
+      { name: "Anthropic", icon: "anthropic" },
+      { name: "OpenAI", icon: "openai" },
+      { name: "Ollama", icon: "ollama" },
+      { name: "n8n", icon: "n8n" },
+      { name: "Zapier", icon: "zapier" },
+      { name: "Claude Code", icon: "claude" },
+      { name: "Codex", icon: "codex" },
+    ],
+  },
+  {
+    title: "DevOps & Tools",
+    items: [
+      { name: "Docker", icon: "docker" },
+      { name: "Vercel", icon: "vercel" },
+      { name: "Git", icon: "git" },
+      { name: "GitHub", icon: "github" },
+    ],
+  },
 ];
 
 // Modules of a private AI agent platform (client work, so no public links).
@@ -131,7 +157,6 @@ export const projects: Project[] = [
 export const cta: Cta = {
   title: "Interested in working together?",
   text: "I'm open to freelance, full-time, or collaboration opportunities.",
-  button: "Send Message",
 };
 
 // Section titles, button labels, and other UI copy.
@@ -154,7 +179,8 @@ for (const link of externalLinks) {
 
 // Guard: every icon slug must have a file in public/icons so a typo fails the build, not the page.
 // This module is only imported by server components, so the filesystem is available.
-const iconSlugs = techStack
+const iconSlugs = techCategories
+  .flatMap((category) => category.items)
   .map((item) => item.icon)
   .filter((slug): slug is string => slug !== null);
 for (const slug of iconSlugs) {

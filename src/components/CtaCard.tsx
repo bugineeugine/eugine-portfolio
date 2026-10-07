@@ -17,13 +17,7 @@ export function CtaCard() {
         <div>
           <h2 className="font-display text-lg font-bold">{cta.title}</h2>
           <p className="mt-1 text-sm leading-6 text-white/70">{cta.text}</p>
-          <a
-            href={`mailto:${profile.email}`}
-            className="mt-4 inline-flex items-center gap-2 rounded-full bg-accent px-5 py-2 text-sm font-semibold hover:bg-blue-700"
-          >
-            {cta.button}
-            <span aria-hidden>&rarr;</span>
-          </a>
+          <p className="mt-4 select-all text-sm font-semibold">{profile.email}</p>
         </div>
       </div>
     </section>
