@@ -44,12 +44,7 @@ export function ProjectCard({ project }: { project: Project }) {
             </a>
           )}
         </div>
-        <ul className="mt-2 flex flex-wrap gap-x-3 gap-y-1 pl-3.5 text-xs text-body">
-          {project.tech.map((t) => (
-            <li key={t}>{t}</li>
-          ))}
-        </ul>
-        <p className="mt-3 pl-3.5 text-sm leading-6 text-body">{project.description}</p>
+        <p className="mt-2 pl-3.5 text-sm leading-6 text-body">{project.description}</p>
       </div>
     </article>
   );
